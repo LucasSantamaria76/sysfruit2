@@ -29,7 +29,7 @@ const ItemSale = ({ item, role }) => {
         >
           <Entypo
             name='trash'
-            size={24}
+            size={20}
             style={tw`text-center text-red-700`}
           />
         </TouchableOpacity>

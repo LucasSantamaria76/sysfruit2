@@ -1,15 +1,18 @@
 import { Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import useAuthStore from '../stores/authStore'
+import useMovementsStore from '../stores/movementsStore'
 
 const ShoppingScreen = () => {
-  const profile = useAuthStore((state) => state.profile)
+  const { cashAvailable, cashChange } = useMovementsStore((state) => ({
+    cashAvailable: state.cashAvailable,
+    cashChange: state.cashChange
+  }))
 
   return (
     <SafeAreaView>
       <View>
-        <Text>{profile.username}</Text>
-        <Text>{profile.role}</Text>
+        <Text>Efectivo en caja: {cashAvailable}</Text>
+        <Text>cambio en caja: {cashChange}</Text>
       </View>
     </SafeAreaView>
   )

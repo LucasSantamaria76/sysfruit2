@@ -6,10 +6,17 @@ const initialState = {
   id: '',
   cashAvailable: 0,
   cashChange: 0,
+  date: '',
   cashWithdrawals: [],
   purchases: [],
   sales: []
 }
+
+const totalSalesCash = (sales) =>
+  sales.reduce((total, item) => {
+    total += item.typeOfPayment === 'Efectivo' ? item.amount : 0
+    return total
+  }, 0)
 
 const useMovementsStore = create((set, get) => ({
   ...initialState,
@@ -34,13 +41,14 @@ const useMovementsStore = create((set, get) => ({
         .eq('day', movementsOfTheDay[0].id)
         .order('created_at', { ascending: false })
       if (error) return Promise.reject(error)
-      set({ sales })
+
+      set({ sales, cashAvailable: movementsOfTheDay[0].cashChange + totalSalesCash(sales) })
     }
 
     set({
       id: movementsOfTheDay[0].id,
-      cashAvailable: movementsOfTheDay[0].cashAvailable,
-      cashChange: movementsOfTheDay[0].cashChange
+      cashChange: movementsOfTheDay[0].cashChange,
+      date: movementsOfTheDay[0].date
     })
   },
   getSales: async () => {
@@ -50,7 +58,7 @@ const useMovementsStore = create((set, get) => ({
       .eq('day', get().id)
       .order('created_at', { ascending: false })
     if (error) return Promise.reject(error)
-    set({ sales })
+    set({ sales, cashAvailable: get().cashChange + totalSalesCash(sales) })
     return Promise.resolve()
   }
 }))

@@ -8,12 +8,16 @@ import { useEffect } from 'react'
 import useAuthStore from '../stores/authStore'
 import useMovementsStore from '../stores/movementsStore'
 import { supabase } from '../lib/supabase'
+import { formatInTimeZone } from 'date-fns-tz'
 
 const HomeScreen = ({ navigation }) => {
   const logout = useAuthStore((state) => state.logout)
-  const getMovements = useMovementsStore((state) => state.getMovements)
-  const day = useMovementsStore((state) => state.id)
-  const getSales = useMovementsStore((state) => state.getSales)
+  const { day, date, getMovements, getSales } = useMovementsStore((state) => ({
+    getMovements: state.getMovements,
+    day: state.id,
+    getSales: state.getSales,
+    date: state.date
+  }))
 
   useEffect(() => {
     getMovements().catch((err) => console.error('error => ', err))
@@ -46,17 +50,22 @@ const HomeScreen = ({ navigation }) => {
         <SimpleLineIcons
           name='logout'
           size={20}
-          color='white'
+          color='#ef4444'
           onPress={closeApp}
         />
         <View style={tw`flex items-center justify-center h-16`}>
           <Text style={tw`text-lg text-white`}>Sistema de Ventas</Text>
-          <Text>Fecha</Text>
+          <Text style={tw`text-white`}>
+            {formatInTimeZone(Date.now(), 'America/Argentina/Buenos_Aires', 'MMMM dd yyyy')}
+          </Text>
         </View>
         <MaterialCommunityIcons
           name='cash-register'
           size={24}
-          color='white'
+          color='#fca5a5'
+          onPress={() => {
+            navigation.navigate('AmountEntry', { typeOfPayment: 'Cambio en caja' })
+          }}
         />
       </View>
       <View style={tw`flex items-center h-full gap-3 p-5`}>

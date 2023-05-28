@@ -12,7 +12,12 @@ import { supabase } from '../lib/supabase'
 const AmountEntryScreen = ({ navigation, route: { params } }) => {
   const [amount, setAmount] = useState('')
   const userId = useAuthStore((state) => state.profile.id)
-  const day = useMovementsStore((state) => state.id)
+  const { cashAvailable, cashChange, day, getMovements } = useMovementsStore((state) => ({
+    getMovements: state.getMovements,
+    day: state.id,
+    cashAvailable: state.cashAvailable,
+    cashChange: state.cashChange
+  }))
   const { typeOfPayment } = params
   const toast = useToast()
 
@@ -26,18 +31,44 @@ const AmountEntryScreen = ({ navigation, route: { params } }) => {
   }
 
   const handleSave = async () => {
-    if (!userId && !amount && !typeOfPayment && !day) return
     try {
+      if (typeOfPayment === 'Cambio en caja') {
+        const { error } = await supabase
+          .from('movementsOfTheDay')
+          .update({ cashChange: amount })
+          .eq('id', day)
+
+        if (error) throw error
+
+        getMovements()
+        toast.show(`Cambio en caja $${amount}`, { type: 'normal' })
+        navigation.goBack()
+        return
+      }
+
+      if (!userId && !amount && !day) return
+
       const { error } = await supabase
         .from('sales')
         .insert([{ userId, amount, typeOfPayment, day }])
+
       if (error) throw error
-      //addSale(data)
+
+      /* if (typeOfPayment === 'Efectivo') {
+        const { error } = await supabase
+          .from('movementsOfTheDay')
+          .update({ cashAvailable: cashAvailable + Number(amount) })
+          .eq('id', day)
+
+        if (error) throw error
+
+        getMovements()
+      }
+ */
       toast.show(`Venta de $${amount} agregada`, { type: 'success' })
       navigation.goBack()
     } catch (error) {
-      toast.show(`Error al agregar la venta`, { type: 'danger' })
-      console.log('err => ', error)
+      toast.show(`Error: operación no realizada`, { type: 'danger' })
     }
   }
 
