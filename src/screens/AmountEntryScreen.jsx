@@ -54,17 +54,6 @@ const AmountEntryScreen = ({ navigation, route: { params } }) => {
 
       if (error) throw error
 
-      /* if (typeOfPayment === 'Efectivo') {
-        const { error } = await supabase
-          .from('movementsOfTheDay')
-          .update({ cashAvailable: cashAvailable + Number(amount) })
-          .eq('id', day)
-
-        if (error) throw error
-
-        getMovements()
-      }
- */
       toast.show(`Venta de $${amount} agregada`, { type: 'success' })
       navigation.goBack()
     } catch (error) {

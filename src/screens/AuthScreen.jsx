@@ -12,8 +12,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons'
 import tw from 'twrnc'
 import useAuthStore from '../stores/authStore'
 import { useToast } from 'react-native-toast-notifications'
-
-const inputStyle = tw`flex flex-row items-center justify-between w-full h-12 gap-2 px-2 border border-black rounded-md`
+import { inputStyleWithIcons } from '../styles'
 
 const AuthScreen = () => {
   const [email, setEmail] = useState('')
@@ -43,7 +42,7 @@ const AuthScreen = () => {
         <View style={tw`flex items-center justify-center w-full h-full gap-5 p-4`}>
           <Text style={tw`pb-6 text-4xl font-bold text-teal-500`}>Iniciar sesión</Text>
 
-          <View style={inputStyle}>
+          <View style={inputStyleWithIcons}>
             <MaterialCommunityIcons
               name='email-edit-outline'
               size={24}
@@ -63,7 +62,7 @@ const AuthScreen = () => {
               }}
             />
           </View>
-          <View style={inputStyle}>
+          <View style={inputStyleWithIcons}>
             <MaterialCommunityIcons
               name='account-lock-outline'
               size={24}

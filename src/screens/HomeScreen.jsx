@@ -8,7 +8,7 @@ import { useEffect } from 'react'
 import useAuthStore from '../stores/authStore'
 import useMovementsStore from '../stores/movementsStore'
 import { supabase } from '../lib/supabase'
-import { formatInTimeZone } from 'date-fns-tz'
+import { formatDate } from '../lib/formatDate'
 
 const HomeScreen = ({ navigation }) => {
   const logout = useAuthStore((state) => state.logout)
@@ -55,9 +55,7 @@ const HomeScreen = ({ navigation }) => {
         />
         <View style={tw`flex items-center justify-center h-16`}>
           <Text style={tw`text-lg text-white`}>Sistema de Ventas</Text>
-          <Text style={tw`text-white`}>
-            {formatInTimeZone(Date.now(), 'America/Argentina/Buenos_Aires', 'MMMM dd yyyy')}
-          </Text>
+          <Text style={tw`text-white`}>{formatDate}</Text>
         </View>
         <MaterialCommunityIcons
           name='cash-register'

@@ -1,5 +1,6 @@
-import { AdminScreen, SalesListingScreen, ShoppingScreen } from './../screens'
+import { SalesListingScreen, ShoppingScreen } from './../screens'
 import StackSales from './../navigation/StackSales'
+import StackAdmin from '../navigation/StackAdmin'
 
 export const itemsTab = [
   {
@@ -16,6 +17,6 @@ export const itemsTab = [
   },
   {
     name: 'ellipsis-horizontal',
-    component: AdminScreen
+    component: StackAdmin
   }
 ]

@@ -18,6 +18,12 @@ const totalSalesCash = (sales) =>
     return total
   }, 0)
 
+const totalPurchasesCash = (purchases) =>
+  purchases.reduce((total, item) => {
+    total += item.typeOfPayment === 'Efectivo' ? item.amount : 0
+    return total
+  }, 0)
+
 const useMovementsStore = create((set, get) => ({
   ...initialState,
   getMovements: async () => {
@@ -40,9 +46,21 @@ const useMovementsStore = create((set, get) => ({
         .select('*')
         .eq('day', movementsOfTheDay[0].id)
         .order('created_at', { ascending: false })
-      if (error) return Promise.reject(error)
 
-      set({ sales, cashAvailable: movementsOfTheDay[0].cashChange + totalSalesCash(sales) })
+      const { data: purchases, errorPurchases } = await supabase
+        .from('purchases')
+        .select('*')
+        .eq('day', movementsOfTheDay[0].id)
+
+      const errors = error || errorPurchases
+      if (errors) return Promise.reject(errors)
+
+      set({
+        purchases,
+        sales,
+        cashAvailable:
+          movementsOfTheDay[0].cashChange + totalSalesCash(sales) - totalPurchasesCash(purchases)
+      })
     }
 
     set({
@@ -58,7 +76,10 @@ const useMovementsStore = create((set, get) => ({
       .eq('day', get().id)
       .order('created_at', { ascending: false })
     if (error) return Promise.reject(error)
-    set({ sales, cashAvailable: get().cashChange + totalSalesCash(sales) })
+    set({
+      sales,
+      cashAvailable: get().cashChange + totalSalesCash(sales) - totalPurchasesCash(get().purchases)
+    })
     return Promise.resolve()
   }
 }))
