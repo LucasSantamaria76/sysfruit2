@@ -10,8 +10,9 @@ import { useToast } from 'react-native-toast-notifications'
 import { supabase } from '../lib/supabase'
 import useAuthStore from '../stores/authStore'
 import useMovementsStore from './../stores/movementsStore'
+import { FontAwesome } from '@expo/vector-icons'
 
-const ShoppingScreen = () => {
+const ShoppingScreen = ({ navigation }) => {
   const [description, setDescription] = useState('Varios')
   const [amount, setAmount] = useState('')
   const userId = useAuthStore((state) => state.profile.id)
@@ -33,6 +34,8 @@ const ShoppingScreen = () => {
 
   const handleSave = async (val) => {
     try {
+      if (!amount || !description)
+        return toast.show('La descripción y el importe son requeridos', { type: 'warning' })
       const typeOfPayment = val === '💰' ? 'Efectivo' : 'Otros'
       const { error } = await supabase
         .from('purchases')
@@ -42,7 +45,7 @@ const ShoppingScreen = () => {
       getMovements()
       setAmount('')
 
-      toast.show('Compra Realizada', { type: 'success' })
+      toast.show('Operación Realizada con éxito', { type: 'success' })
     } catch (error) {
       toast.show(`Operación no realizada, Error: ${error}`, { type: 'danger' })
     }
@@ -50,26 +53,41 @@ const ShoppingScreen = () => {
   return (
     <SafeAreaView>
       <View style={tw`items-center gap-3`}>
-        <View style={tw`flex flex-row items-center justify-center w-full h-16 px-3 bg-teal-700`}>
+        <View style={tw`flex flex-row items-center justify-between w-full h-16 px-3 bg-teal-700`}>
+          <Text />
           <View style={tw`flex items-center justify-center h-16`}>
-            <Text style={tw`text-2xl font-extrabold text-red-500`}>Ingreso de compras</Text>
+            <Text style={tw`text-2xl font-extrabold text-red-500`}>Ingreso de salidas</Text>
             <Text style={tw`text-white`}>{formatDate}</Text>
           </View>
+          <FontAwesome
+            name='list-alt'
+            size={32}
+            color='white'
+            onPress={() => {
+              navigation.navigate('PurchasesListingScreen')
+            }}
+          />
         </View>
-        <TextInput
-          autoCapitalize='words'
-          inputMode='text'
-          value={description}
-          onChangeText={setDescription}
-          style={[inputStyle, tw`pt-1 text-3xl`]}
-        />
-        <TextInput
-          editable={false}
-          autoCapitalize='words'
-          inputMode='text'
-          value={amount}
-          style={[inputStyle, tw`pt-1 text-4xl font-bold text-right`]}
-        />
+        <View style={tw`items-center w-full`}>
+          <Text style={tw`self-start pl-5 text-sm`}>Descripción</Text>
+          <TextInput
+            autoCapitalize='words'
+            inputMode='text'
+            value={description}
+            onChangeText={setDescription}
+            style={[inputStyle, tw`pt-1 text-3xl`]}
+          />
+        </View>
+        <View style={tw`items-center w-full`}>
+          <Text style={tw`self-start pl-5 text-sm`}>Importe</Text>
+          <TextInput
+            editable={false}
+            autoCapitalize='words'
+            inputMode='text'
+            value={amount}
+            style={[inputStyle, tw`pt-1 text-4xl font-bold text-right`]}
+          />
+        </View>
 
         <View style={tw`flex flex-row flex-wrap w-11/12 h-auto`}>
           {KEYS_Shopping.map((el) => (

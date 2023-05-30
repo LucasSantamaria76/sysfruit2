@@ -1,17 +1,30 @@
-import { Text, View } from 'react-native'
+import { Image, Text, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import useMovementsStore from '../stores/movementsStore'
+import { itemsMenuAdmin } from '../items'
+import tw from 'twrnc'
 
-const AdminScreen = () => {
-  const { cashAvailable, cashChange } = useMovementsStore((state) => ({
-    cashAvailable: state.cashAvailable,
-    cashChange: state.cashChange
-  }))
+const AdminScreen = ({ navigation }) => {
   return (
     <SafeAreaView>
-      <View>
-        <Text>Dinero en caja: {cashAvailable}</Text>
-        <Text>Cambio: {cashChange}</Text>
+      <View style={tw`flex items-center justify-center w-full h-12 mb-3 bg-teal-700`}>
+        <Text style={tw`text-2xl text-white`}>Administración</Text>
+      </View>
+      <View style={tw`flex flex-row flex-wrap justify-between w-11/12 gap-3 mx-auto`}>
+        {itemsMenuAdmin.map((item) => (
+          <TouchableOpacity
+            key={item.name}
+            style={tw`w-[48%] p-2 h-48 border border-black rounded-lg`}
+            onPress={() => {
+              navigation.navigate(item.page)
+            }}
+          >
+            <Image
+              source={item.image}
+              style={tw`w-8/12 mx-auto rounded-lg h-4/6`}
+            />
+            <Text style={tw`w-full text-lg text-center`}>{item.name}</Text>
+          </TouchableOpacity>
+        ))}
       </View>
     </SafeAreaView>
   )

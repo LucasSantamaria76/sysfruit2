@@ -21,7 +21,7 @@ export const itemsBtnShopping = [
     image: condimentos
   },
   {
-    name: 'Empledos',
+    name: 'Empleados',
     image: empleados
   },
   {

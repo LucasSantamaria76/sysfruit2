@@ -1,23 +1,23 @@
 import { createStackNavigator } from '@react-navigation/stack'
-import { AdminScreen, NoPermissions, DailySummary } from '../screens'
 import useAuthStore from '../stores/authStore'
+import { PurchasesListingScreen, ShoppingScreen } from '../screens'
 
 const { Navigator, Screen } = createStackNavigator()
 
-const StackAdmin = () => {
+const StackPurchases = () => {
   const { profile } = useAuthStore((state) => ({ profile: state.profile }))
 
   return (
     <Navigator screenOptions={{ headerShown: false }}>
       <Screen
-        name='homeAdmin'
-        component={profile.role === 'ADMIN' ? AdminScreen : NoPermissions}
+        name='ShoppingScreen'
+        component={ShoppingScreen}
       />
       <Screen
-        name='dailySummary'
-        component={DailySummary}
+        name='PurchasesListingScreen'
+        component={PurchasesListingScreen}
       />
     </Navigator>
   )
 }
-export default StackAdmin
+export default StackPurchases

@@ -12,10 +12,11 @@ import { formatDate } from '../lib/formatDate'
 
 const HomeScreen = ({ navigation }) => {
   const logout = useAuthStore((state) => state.logout)
-  const { day, date, getMovements, getSales } = useMovementsStore((state) => ({
+  const { day, date, getMovements, getPurchases, getSales } = useMovementsStore((state) => ({
     getMovements: state.getMovements,
     day: state.id,
     getSales: state.getSales,
+    getPurchases: state.getPurchases,
     date: state.date
   }))
 
@@ -34,6 +35,15 @@ const HomeScreen = ({ navigation }) => {
           table: 'sales'
         },
         () => getSales()
+      )
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'purchases'
+        },
+        () => getPurchases()
       )
       .subscribe()
     return () => supabase.removeChannel(channel)

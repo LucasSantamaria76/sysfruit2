@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { supabase } from '../lib/supabase'
 import { formatInTimeZone } from 'date-fns-tz'
+import { totals } from '../lib/totals'
 
 const initialState = {
   id: '',
@@ -11,18 +12,6 @@ const initialState = {
   purchases: [],
   sales: []
 }
-
-const totalSalesCash = (sales) =>
-  sales.reduce((total, item) => {
-    total += item.typeOfPayment === 'Efectivo' ? item.amount : 0
-    return total
-  }, 0)
-
-const totalPurchasesCash = (purchases) =>
-  purchases.reduce((total, item) => {
-    total += item.typeOfPayment === 'Efectivo' ? item.amount : 0
-    return total
-  }, 0)
 
 const useMovementsStore = create((set, get) => ({
   ...initialState,
@@ -59,7 +48,9 @@ const useMovementsStore = create((set, get) => ({
         purchases,
         sales,
         cashAvailable:
-          movementsOfTheDay[0].cashChange + totalSalesCash(sales) - totalPurchasesCash(purchases)
+          movementsOfTheDay[0].cashChange +
+          (totals(sales)['Efectivo'].amount || 0) -
+          (totals(purchases)['Efectivo'].amount || 0)
       })
     }
 
@@ -78,7 +69,26 @@ const useMovementsStore = create((set, get) => ({
     if (error) return Promise.reject(error)
     set({
       sales,
-      cashAvailable: get().cashChange + totalSalesCash(sales) - totalPurchasesCash(get().purchases)
+      cashAvailable:
+        get().cashChange +
+        (totals(sales)['Efectivo'].amount || 0) -
+        (totals(get().purchases)['Efectivo'].amount || 0)
+    })
+    return Promise.resolve()
+  },
+  getPurchases: async () => {
+    const { data: purchases, error } = await supabase
+      .from('purchases')
+      .select('*')
+      .eq('day', get().id)
+      .order('created_at', { ascending: false })
+    if (error) return Promise.reject(error)
+    set({
+      purchases,
+      cashAvailable:
+        get().cashChange +
+        (totals(get().sales)['Efectivo'].amount || 0) -
+        (totals(purchases)['Efectivo'].amount || 0)
     })
     return Promise.resolve()
   }
