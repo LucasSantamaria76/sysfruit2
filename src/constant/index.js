@@ -1,3 +1,11 @@
+export const AR = 'America/Argentina/Buenos_Aires'
+export const CASH = 'Efectivo'
+export const OTHERS = 'Otros'
+export const CUENTA_DNI = 'Cuenta DNI'
+export const DEBIT = 'Débito'
+export const CREDIT = 'Crédito'
+export const MERCADO_PAGO = 'Mercado Pago'
+
 export const KEYS = [
   '7',
   '8',
@@ -34,4 +42,19 @@ export const KEYS_Shopping = [
   '00',
   '000',
   '.'
+]
+
+export const months = [
+  'Enero',
+  'Febrero',
+  'Marzo',
+  'Abril',
+  'Mayo',
+  'Junio',
+  'Julio',
+  'Agosto',
+  'Septiembre',
+  'Octubre',
+  'Noviembre',
+  'Diciembre'
 ]

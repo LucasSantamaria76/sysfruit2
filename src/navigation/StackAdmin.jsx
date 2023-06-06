@@ -1,6 +1,7 @@
 import { createStackNavigator } from '@react-navigation/stack'
-import { AdminScreen, NoPermissions, DailySummary } from '../screens'
 import useAuthStore from '../stores/authStore'
+import { AdminScreen, NoPermissions } from '../screens'
+import { itemsMenuAdmin } from '../items/itemsMenuAdmin'
 
 const { Navigator, Screen } = createStackNavigator()
 
@@ -13,10 +14,13 @@ const StackAdmin = () => {
         name='homeAdmin'
         component={profile.role === 'ADMIN' ? AdminScreen : NoPermissions}
       />
-      <Screen
-        name='dailySummary'
-        component={DailySummary}
-      />
+      {itemsMenuAdmin.map((item) => (
+        <Screen
+          key={item.page}
+          name={item.page}
+          component={item.screen}
+        />
+      ))}
     </Navigator>
   )
 }

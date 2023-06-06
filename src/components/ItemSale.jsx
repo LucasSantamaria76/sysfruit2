@@ -5,6 +5,7 @@ import { formatInTimeZone } from 'date-fns-tz'
 import { formatPrice } from '../lib/formatPrice'
 import { Entypo } from '@expo/vector-icons'
 import { supabase } from '../lib/supabase'
+import { AR } from '../constant'
 
 const ItemSale = ({ item, role }) => {
   return (
@@ -17,9 +18,7 @@ const ItemSale = ({ item, role }) => {
         style={tw`w-[20%] h-9`}
       />
       <Text style={tw`w-[42%] text-right text-lg`}>{formatPrice(item.amount)}</Text>
-      <Text style={tw`w-[25%] text-center`}>
-        {formatInTimeZone(item.created_at, 'America/Argentina/Buenos_Aires', 'HH:mm')}
-      </Text>
+      <Text style={tw`w-[25%] text-center`}>{formatInTimeZone(item.created_at, AR, 'HH:mm')}</Text>
       {role === 'ADMIN' && (
         <TouchableOpacity
           style={tw`w-[9%] mr-2`}

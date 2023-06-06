@@ -21,16 +21,14 @@ const useAuthStore = create((set) => ({
       .eq('id', data.session.user.id)
 
     const errors = error || profileError
-    error && console.log({ error })
 
     if (errors) return Promise.reject(errors)
 
-    set({ profile: profileData[0] })
-    set({ session: data.session })
-    set({ loading: false })
+    set({ profile: profileData[0], session: data.session, loading: false })
+
     return Promise.resolve(data.user)
   },
-  register: async (email, password, username, role) => {
+  register: async ({ email, password, username, role }) => {
     if (!email) return Promise.reject('El nombre de usuario es requerido')
     if (!password) return Promise.reject('La contraseña  es requerida')
 
@@ -42,8 +40,7 @@ const useAuthStore = create((set) => ({
     })
     if (error) return Promise.reject(error)
 
-    set({ session: data.session })
-    set({ loading: false })
+    set({ session: data.session, loading: false })
 
     return Promise.resolve(data.user)
   },

@@ -3,41 +3,42 @@ import dni from '../../assets/images/DNI.android.jpg'
 import credit from '../../assets/images/credit.android.png'
 import debit from '../../assets/images/debit.android.png'
 import mp from '../../assets/images/mp.android.png'
+import { CASH, CREDIT, CUENTA_DNI, DEBIT, MERCADO_PAGO } from '../constant'
 
 export const itemsTypesSales = [
   {
-    name: 'Efectivo',
+    name: CASH,
     image: cash
   },
   {
-    name: 'Cuenta DNI',
+    name: CUENTA_DNI,
     image: dni
   },
   {
-    name: 'Débito',
+    name: DEBIT,
     image: debit
   },
   {
-    name: 'Crédito',
+    name: CREDIT,
     image: credit
   },
   {
-    name: 'Mercado Pago',
+    name: MERCADO_PAGO,
     image: mp
   }
 ]
 
 export const typeOfPayment = (type) => {
   switch (type) {
-    case 'Cuenta DNI':
+    case CUENTA_DNI:
       return dni
-    case 'Mercado Pago':
+    case MERCADO_PAGO:
       return mp
-    case 'Débito':
+    case DEBIT:
       return debit
-    case 'Crédito':
+    case CREDIT:
       return credit
-    case 'Efectivo':
+    case CASH:
       return cash
   }
 }

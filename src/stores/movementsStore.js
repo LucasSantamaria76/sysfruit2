@@ -1,7 +1,8 @@
 import { create } from 'zustand'
 import { supabase } from '../lib/supabase'
 import { formatInTimeZone } from 'date-fns-tz'
-import { totals } from '../lib/totals'
+import { total, totals } from '../lib/totals'
+import { AR, CASH } from '../constant'
 
 const initialState = {
   id: '',
@@ -16,7 +17,7 @@ const initialState = {
 const useMovementsStore = create((set, get) => ({
   ...initialState,
   getMovements: async () => {
-    const now = formatInTimeZone(Date.now(), 'America/Argentina/Buenos_Aires', 'dd-MM-yyyy')
+    const now = formatInTimeZone(Date.now(), AR, 'dd-MM-yyyy')
     const { data, error } = await supabase.from('movementsOfTheDay').select('*').eq('date', now)
 
     if (error) return Promise.reject(error)
@@ -36,21 +37,30 @@ const useMovementsStore = create((set, get) => ({
         .eq('day', movementsOfTheDay[0].id)
         .order('created_at', { ascending: false })
 
+      const { data: cashWithdrawals, errorCashWithdrawals } = await supabase
+        .from('cashWithdrawals')
+        .select('*')
+        .eq('day', movementsOfTheDay[0].id)
+        .order('created_at', { ascending: false })
+
       const { data: purchases, errorPurchases } = await supabase
         .from('purchases')
         .select('*')
         .eq('day', movementsOfTheDay[0].id)
+        .order('created_at', { ascending: false })
 
-      const errors = error || errorPurchases
+      const errors = error || errorPurchases || errorCashWithdrawals
       if (errors) return Promise.reject(errors)
 
       set({
         purchases,
         sales,
+        cashWithdrawals,
         cashAvailable:
           movementsOfTheDay[0].cashChange +
-          (totals(sales)['Efectivo'].amount || 0) -
-          (totals(purchases)['Efectivo'].amount || 0)
+          (totals(sales)[CASH]?.amount || 0) -
+          (total(cashWithdrawals) || 0) -
+          (totals(purchases)[CASH]?.amount || 0)
       })
     }
 
@@ -67,12 +77,16 @@ const useMovementsStore = create((set, get) => ({
       .eq('day', get().id)
       .order('created_at', { ascending: false })
     if (error) return Promise.reject(error)
+
+    const cashAvailable =
+      (get().cashChange || 0) +
+      (totals(sales)[CASH]?.amount || 0) -
+      (total(get().cashWithdrawals) || 0) -
+      (totals(get().purchases)[CASH]?.amount || 0)
+
     set({
       sales,
-      cashAvailable:
-        get().cashChange +
-        (totals(sales)['Efectivo'].amount || 0) -
-        (totals(get().purchases)['Efectivo'].amount || 0)
+      cashAvailable
     })
     return Promise.resolve()
   },
@@ -87,8 +101,26 @@ const useMovementsStore = create((set, get) => ({
       purchases,
       cashAvailable:
         get().cashChange +
-        (totals(get().sales)['Efectivo'].amount || 0) -
-        (totals(purchases)['Efectivo'].amount || 0)
+        (totals(get().sales)[CASH]?.amount || 0) -
+        (total(get().cashWithdrawals) || 0) -
+        (totals(purchases)[CASH]?.amount || 0)
+    })
+    return Promise.resolve()
+  },
+  getCashWithdrawals: async () => {
+    const { data: cashWithdrawals, error } = await supabase
+      .from('cashWithdrawals')
+      .select('*')
+      .eq('day', get().id)
+      .order('created_at', { ascending: false })
+    if (error) return Promise.reject(error)
+    set({
+      cashWithdrawals,
+      cashAvailable:
+        get().cashChange +
+        (totals(get().sales)[CASH]?.amount || 0) -
+        (total(cashWithdrawals) || 0) -
+        (totals(get().purchases)[CASH]?.amount || 0)
     })
     return Promise.resolve()
   }

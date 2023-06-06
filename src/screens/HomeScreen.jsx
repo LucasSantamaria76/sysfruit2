@@ -1,4 +1,4 @@
-import { BackHandler, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, BackHandler, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { itemsTypesSales } from './../items'
 import tw from 'twrnc'
@@ -12,13 +12,16 @@ import { formatDate } from '../lib/formatDate'
 
 const HomeScreen = ({ navigation }) => {
   const logout = useAuthStore((state) => state.logout)
-  const { day, date, getMovements, getPurchases, getSales } = useMovementsStore((state) => ({
-    getMovements: state.getMovements,
-    day: state.id,
-    getSales: state.getSales,
-    getPurchases: state.getPurchases,
-    date: state.date
-  }))
+  const { day, date, getCashWithdrawals, getMovements, getPurchases, getSales } = useMovementsStore(
+    (state) => ({
+      getMovements: state.getMovements,
+      day: state.id,
+      getSales: state.getSales,
+      getPurchases: state.getPurchases,
+      getCashWithdrawals: state.getCashWithdrawals,
+      date: state.date
+    })
+  )
 
   useEffect(() => {
     getMovements().catch((err) => console.error('error => ', err))
@@ -34,7 +37,10 @@ const HomeScreen = ({ navigation }) => {
           schema: 'public',
           table: 'sales'
         },
-        () => getSales()
+        () =>
+          getSales().catch((error) =>
+            Alert.alert('Error', JSON.stringify(error, null, 2), [{ text: 'Aceptar' }])
+          )
       )
       .on(
         'postgres_changes',
@@ -43,10 +49,30 @@ const HomeScreen = ({ navigation }) => {
           schema: 'public',
           table: 'purchases'
         },
-        () => getPurchases()
+        () =>
+          getPurchases().catch((error) =>
+            Alert.alert('Error', JSON.stringify(error, null, 2), [{ text: 'Aceptar' }])
+          )
+      )
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'cashWithdrawals'
+        },
+        () =>
+          getCashWithdrawals().catch((error) =>
+            Alert.alert('Error', JSON.stringify(error, null, 2), [{ text: 'Aceptar' }])
+          )
       )
       .subscribe()
-    return () => supabase.removeChannel(channel)
+    return () =>
+      supabase
+        .removeChannel(channel)
+        .catch((error) =>
+          Alert.alert('Error', JSON.stringify(error, null, 2), [{ text: 'Aceptar' }])
+        )
   }, [day])
 
   const closeApp = async () => {
@@ -65,7 +91,7 @@ const HomeScreen = ({ navigation }) => {
         />
         <View style={tw`flex items-center justify-center h-16`}>
           <Text style={tw`text-lg text-white`}>Sistema de Ventas</Text>
-          <Text style={tw`text-white`}>{formatDate}</Text>
+          <Text style={tw`text-white`}>{formatDate(Date.now())}</Text>
         </View>
         <MaterialCommunityIcons
           name='cash-register'

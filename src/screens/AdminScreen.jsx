@@ -1,7 +1,7 @@
 import { Image, Text, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { itemsMenuAdmin } from '../items'
 import tw from 'twrnc'
+import { itemsMenuAdmin } from '../items/itemsMenuAdmin'
 
 const AdminScreen = ({ navigation }) => {
   return (
@@ -13,14 +13,14 @@ const AdminScreen = ({ navigation }) => {
         {itemsMenuAdmin.map((item) => (
           <TouchableOpacity
             key={item.name}
-            style={tw`w-[48%] p-2 h-48 border border-black rounded-lg`}
+            style={tw`w-[48%] flex justify-center p-2 h-40 border border-black rounded-lg`}
             onPress={() => {
               navigation.navigate(item.page)
             }}
           >
             <Image
               source={item.image}
-              style={tw`w-8/12 mx-auto rounded-lg h-4/6`}
+              style={tw`w-2/5 mx-auto rounded-lg h-3/5`}
             />
             <Text style={tw`w-full text-lg text-center`}>{item.name}</Text>
           </TouchableOpacity>

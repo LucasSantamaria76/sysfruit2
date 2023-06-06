@@ -4,7 +4,7 @@ import tw from 'twrnc'
 import { useState } from 'react'
 import { inputStyle } from '../styles'
 import { formatDate } from '../lib/formatDate'
-import { KEYS_Shopping } from '../constant'
+import { CASH, KEYS_Shopping, OTHERS } from '../constant'
 import { itemsBtnShopping } from '../items'
 import { useToast } from 'react-native-toast-notifications'
 import { supabase } from '../lib/supabase'
@@ -16,10 +16,10 @@ const ShoppingScreen = ({ navigation }) => {
   const [description, setDescription] = useState('Varios')
   const [amount, setAmount] = useState('')
   const userId = useAuthStore((state) => state.profile.id)
-  const { cashAvailable, cashChange, day, getMovements } = useMovementsStore((state) => ({
+  const { cashAvailable, cashChange, day, getPurchases } = useMovementsStore((state) => ({
     cashAvailable: state.cashAvailable,
     cashChange: state.cashChange,
-    getMovements: state.getMovements,
+    getPurchases: state.getPurchases,
     day: state.id
   }))
   const toast = useToast()
@@ -36,13 +36,13 @@ const ShoppingScreen = ({ navigation }) => {
     try {
       if (!amount || !description)
         return toast.show('La descripción y el importe son requeridos', { type: 'warning' })
-      const typeOfPayment = val === '💰' ? 'Efectivo' : 'Otros'
+      const typeOfPayment = val === '💰' ? CASH : OTHERS
       const { error } = await supabase
         .from('purchases')
         .insert([{ amount, description, userId, day, typeOfPayment }])
       if (error) throw error
 
-      getMovements()
+      getPurchases()
       setAmount('')
 
       toast.show('Operación Realizada con éxito', { type: 'success' })
@@ -57,7 +57,7 @@ const ShoppingScreen = ({ navigation }) => {
           <Text />
           <View style={tw`flex items-center justify-center h-16`}>
             <Text style={tw`text-2xl font-extrabold text-red-500`}>Ingreso de salidas</Text>
-            <Text style={tw`text-white`}>{formatDate}</Text>
+            <Text style={tw`text-white`}>{formatDate(Date.now())}</Text>
           </View>
           <FontAwesome
             name='list-alt'
@@ -82,7 +82,6 @@ const ShoppingScreen = ({ navigation }) => {
           <Text style={tw`self-start pl-5 text-sm`}>Importe</Text>
           <TextInput
             editable={false}
-            autoCapitalize='words'
             inputMode='text'
             value={amount}
             style={[inputStyle, tw`pt-1 text-4xl font-bold text-right`]}

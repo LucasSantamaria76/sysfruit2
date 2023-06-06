@@ -1,9 +1,10 @@
-import { FlatList, SafeAreaView, StyleSheet, ScrollView, View, Text } from 'react-native'
+import { FlatList, StyleSheet, ScrollView, View, Text } from 'react-native'
 import { ItemPurchase } from '../components'
 import useMovementsStore from '../stores/movementsStore'
 import useAuthStore from '../stores/authStore'
 import { Entypo } from 'react-native-vector-icons'
 import tw from 'twrnc'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 const PurchasesListingScreen = ({ navigation }) => {
   const purchases = useMovementsStore((state) => state.purchases)
