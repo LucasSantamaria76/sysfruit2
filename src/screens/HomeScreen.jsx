@@ -1,7 +1,7 @@
 import { Alert, BackHandler, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { itemsTypesSales } from './../items'
-import tw from 'twrnc'
+import tw from '../lib/tailwind'
 import { SimpleLineIcons } from '@expo/vector-icons'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { useEffect } from 'react'
@@ -82,27 +82,29 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView>
-      <View style={tw`flex flex-row items-center justify-between w-full h-16 px-3 bg-teal-700`}>
+      <View
+        style={tw`flex flex-row items-center justify-between w-full h-16 px-3 bg-teal-700 md:h-24`}
+      >
         <SimpleLineIcons
           name='logout'
-          size={20}
+          size={32}
           color='#ef4444'
           onPress={closeApp}
         />
         <View style={tw`flex items-center justify-center h-16`}>
-          <Text style={tw`text-lg text-white`}>Sistema de Ventas</Text>
-          <Text style={tw`text-white`}>{formatDate(Date.now())}</Text>
+          <Text style={tw`text-xl text-white md:text-4xl`}>Sistema de Ventas</Text>
+          <Text style={tw`text-white md:text-xl`}>{formatDate(Date.now())}</Text>
         </View>
         <MaterialCommunityIcons
           name='cash-register'
-          size={24}
-          color='#fca5a5'
+          size={50}
+          color='#ef4444'
           onPress={() => {
             navigation.navigate('AmountEntry', { typeOfPayment: 'Cambio en caja' })
           }}
         />
       </View>
-      <View style={tw`flex items-center h-full gap-3 p-5`}>
+      <View style={tw`flex items-center w-full h-full gap-3 p-5 mx-auto md:w-4/5`}>
         {itemsTypesSales.map((item) => (
           <TouchableOpacity
             key={item.name}
@@ -114,9 +116,9 @@ const HomeScreen = ({ navigation }) => {
             <Image
               source={item.image}
               resizeMode='contain'
-              style={tw`w-2/5 h-16`}
+              style={tw`w-2/5 h-14 md:h-24`}
             />
-            <Text style={tw`text-2xl font-bold text-teal-500`}>{item.name}</Text>
+            <Text style={tw`text-2xl font-bold text-teal-500 md:text-5xl`}>{item.name}</Text>
           </TouchableOpacity>
         ))}
       </View>

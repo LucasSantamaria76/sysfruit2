@@ -11,7 +11,7 @@ import {
 import { useForm, Controller, useFieldArray } from 'react-hook-form'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { inputStyleWithIcons } from '../styles'
-import tw from 'twrnc'
+import tw from '../lib/tailwind'
 import ButtonGroup from './ButtonGroup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
@@ -75,14 +75,14 @@ const UserForm = ({ login, user, setUser, handleSave }) => {
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <View style={tw`items-center w-11/12 gap-3`}>
+      <View style={tw`items-center w-11/12 gap-3 md:w-9/12`}>
         {!login && (
           <>
-            <View style={tw``}>
-              <View style={inputStyleWithIcons}>
+            <View style={tw`w-full`}>
+              <View style={[inputStyleWithIcons, tw`w-full md:h-16`]}>
                 <MaterialCommunityIcons
                   name='account-outline'
-                  size={24}
+                  size={28}
                   color='black'
                 />
                 <Controller
@@ -98,7 +98,7 @@ const UserForm = ({ login, user, setUser, handleSave }) => {
                       value={value}
                       returnKeyType='next'
                       selectTextOnFocus
-                      style={tw`w-11/12 text-xl text-black`}
+                      style={tw`w-full h-full text-xl text-black md:text-3xl`}
                       blurOnSubmit={false}
                       onSubmitEditing={() => {
                         emailRef.current?.focus()
@@ -115,25 +115,25 @@ const UserForm = ({ login, user, setUser, handleSave }) => {
             </View>
 
             <View>
-              <Text style={tw`text-sm`}>Seleccionar Rol</Text>
+              <Text style={tw`text-sm md:text-2xl`}>Seleccionar Rol</Text>
               <ButtonGroup
                 value={user?.role === 'ADMIN' ? 0 : 1}
                 setValue={setValue}
-                style={tw`justify-between w-full h-12 border border-black rounded-md`}
+                style={tw`justify-between w-full h-12 border border-black rounded-md md:h-16`}
               >
-                <Text style={tw`text-xl`}>Administrador</Text>
-                <Text style={tw`text-xl`}>Operador</Text>
+                <Text style={tw`text-xl md:text-3xl`}>Administrador</Text>
+                <Text style={tw`text-xl md:text-3xl`}>Operador</Text>
               </ButtonGroup>
             </View>
           </>
         )}
         {!user?.id && (
           <>
-            <View style={tw``}>
-              <View style={inputStyleWithIcons}>
+            <View style={tw`w-full`}>
+              <View style={[inputStyleWithIcons, tw`w-full md:h-16`]}>
                 <MaterialCommunityIcons
                   name='email-edit-outline'
-                  size={24}
+                  size={28}
                   color='black'
                 />
                 <Controller
@@ -146,7 +146,7 @@ const UserForm = ({ login, user, setUser, handleSave }) => {
                       ref={emailRef}
                       inputMode='email'
                       placeholder='Ingrese su email'
-                      style={tw`w-11/12 text-xl text-black`}
+                      style={tw`w-11/12 h-full text-xl text-black md:text-3xl`}
                       returnKeyType='next'
                       onBlur={onBlur}
                       onChangeText={onChange}
@@ -165,11 +165,11 @@ const UserForm = ({ login, user, setUser, handleSave }) => {
               </Text>
             </View>
 
-            <View style={tw``}>
-              <View style={inputStyleWithIcons}>
+            <View style={tw`w-full`}>
+              <View style={[inputStyleWithIcons, tw`w-full md:h-16`]}>
                 <MaterialCommunityIcons
                   name='account-lock-outline'
-                  size={24}
+                  size={28}
                   color='black'
                 />
                 <Controller
@@ -182,7 +182,7 @@ const UserForm = ({ login, user, setUser, handleSave }) => {
                       ref={passwordRef}
                       placeholder='Ingrese su contraseña'
                       secureTextEntry={secureTextEntry}
-                      style={tw`w-4/5 text-xl text-black`}
+                      style={tw`w-4/5 h-full text-xl text-black md:text-3xl`}
                       onBlur={onBlur}
                       onChangeText={onChange}
                       value={value}
@@ -194,7 +194,7 @@ const UserForm = ({ login, user, setUser, handleSave }) => {
                 />
                 <MaterialCommunityIcons
                   name={secureTextEntry ? 'eye-outline' : 'eye-off-outline'}
-                  size={24}
+                  size={28}
                   color='black'
                   onPress={() => setSecureTextEntry(!secureTextEntry)}
                 />
@@ -207,18 +207,18 @@ const UserForm = ({ login, user, setUser, handleSave }) => {
         )}
         <TouchableOpacity
           onPress={handleSubmit(onSubmit)}
-          style={tw`justify-center w-full h-12 bg-teal-600 rounded-md`}
+          style={tw`justify-center w-full h-12 bg-teal-600 rounded-md md:h-20`}
         >
-          <Text style={tw`text-2xl text-center text-white`}>
+          <Text style={tw`text-2xl text-center text-white md:text-4xl`}>
             {login ? 'Ingresar' : user?.id ? 'Modificar usuario' : 'Crear nuevo usuario'}
           </Text>
         </TouchableOpacity>
         {user?.id && (
           <TouchableOpacity
             onPress={cancelValues}
-            style={tw`justify-center w-full h-12 bg-yellow-500 rounded-md`}
+            style={tw`justify-center w-full h-12 bg-yellow-500 rounded-md md:h-20`}
           >
-            <Text style={tw`text-2xl text-center text-white`}>Cancelar</Text>
+            <Text style={tw`text-2xl text-center text-white md:text-4xl`}>Cancelar</Text>
           </TouchableOpacity>
         )}
       </View>

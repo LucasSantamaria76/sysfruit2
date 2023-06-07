@@ -33,7 +33,7 @@ const useMovementsStore = create((set, get) => ({
     } else {
       const { data: sales, error } = await supabase
         .from('sales')
-        .select('*')
+        .select(`*,profiles(username)`)
         .eq('day', movementsOfTheDay[0].id)
         .order('created_at', { ascending: false })
 
@@ -73,7 +73,7 @@ const useMovementsStore = create((set, get) => ({
   getSales: async () => {
     const { data: sales, error } = await supabase
       .from('sales')
-      .select('*')
+      .select(`*,profiles(username)`)
       .eq('day', get().id)
       .order('created_at', { ascending: false })
     if (error) return Promise.reject(error)

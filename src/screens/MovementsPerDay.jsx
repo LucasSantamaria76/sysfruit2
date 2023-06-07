@@ -3,7 +3,6 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import DateTimePickerModal from 'react-native-modal-datetime-picker'
 import { Fontisto, Entypo } from '@expo/vector-icons'
 import { useEffect, useState } from 'react'
-import tw from 'twrnc'
 import { formatInTimeZone } from 'date-fns-tz'
 import { es } from 'date-fns/locale'
 import { supabase } from './../lib/supabase'
@@ -13,6 +12,7 @@ import { formatPrice } from '../lib/formatPrice'
 import { total } from '../lib/totals'
 import Select from 'react-native-select-dropdown'
 import useUsersStore from '../stores/userStore'
+import tw from '../lib/tailwind'
 
 const getMovements = async (date) => {
   try {
@@ -87,12 +87,14 @@ const MovementsPerDay = ({ navigation }) => {
             size={32}
             onPress={() => navigation.goBack()}
           />
-          <Text style={tw`text-2xl font-bold text-teal-600`}>Movimientos por día</Text>
+          <Text style={tw`text-2xl font-bold text-teal-600 md:text-4xl md:m-2`}>
+            Movimientos por día
+          </Text>
           <Text />
         </View>
         <View style={tw`flex flex-row justify-evenly`}>
           <View
-            style={tw`flex flex-row items-center self-center justify-between w-3/5 border-b border-black`}
+            style={tw`flex flex-row items-center self-center justify-between w-3/5 border-b border-black md:w-1/2`}
           >
             <TextInput
               value={formatInTimeZone(
@@ -103,7 +105,7 @@ const MovementsPerDay = ({ navigation }) => {
                   locale: es
                 }
               )}
-              style={tw`text-lg font-bold text-orange-800`}
+              style={tw`text-lg font-bold text-orange-800 md:text-2xl`}
               editable={false}
             />
             <Fontisto
@@ -120,11 +122,11 @@ const MovementsPerDay = ({ navigation }) => {
             defaultValueByIndex={0}
             buttonTextAfterSelection={(selectedItem) => selectedItem.name}
             rowTextForSelection={(item, index) => item.name}
-            buttonStyle={tw`h-8 bg-transparent border-b border-black w-30`}
-            buttonTextStyle={tw`text-sm font-bold`}
+            buttonStyle={tw`h-8 bg-transparent border-b border-black w-30 md:h-10 md:w-40`}
+            buttonTextStyle={tw`text-sm font-bold md:text-3xl`}
             dropdownStyle={tw`rounded-lg`}
-            rowStyle={tw`h-7`}
-            rowTextStyle={tw`text-sm font-bold`}
+            rowStyle={tw`h-7 md:h-10`}
+            rowTextStyle={tw`text-sm font-bold md:text-2xl`}
             selectedRowStyle={tw`bg-teal-600`}
             selectedRowTextStyle={tw`font-bold text-white`}
             renderDropdownIcon={(isOpened) => {
@@ -155,8 +157,8 @@ const MovementsPerDay = ({ navigation }) => {
         <PrintTotalsPurchases purchases={purchases} />
 
         <View style={tw`flex flex-row items-center justify-between p-2 border-b-2 border-teal-600`}>
-          <Text style={tw`text-2xl font-bold `}>Diferencia</Text>
-          <Text style={tw`text-2xl font-bold text-red-500`}>
+          <Text style={tw`text-2xl font-bold md:text-3xl md:m-1`}>Diferencia</Text>
+          <Text style={tw`text-2xl font-bold text-red-500 md:text-3xl`}>
             {formatPrice(total(sales) - total(purchases))}
           </Text>
         </View>

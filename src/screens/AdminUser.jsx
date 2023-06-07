@@ -1,6 +1,6 @@
 import { Alert, FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { Entypo } from 'react-native-vector-icons'
-import tw from 'twrnc'
+import tw from '../lib/tailwind'
 import useUsersStore from '../stores/userStore'
 import { useEffect, useState } from 'react'
 import { ButtonGroup, ItemUser, UserForm } from '../components'
@@ -12,11 +12,11 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 FlatListHeaderList = () => (
   <View
     elevation={5}
-    style={styles.headerList}
+    style={[styles.headerList, tw`md:h-16`]}
   >
-    <View style={tw`flex flex-row w-full h-6 px-3`}>
-      <Text style={tw`w-[45%] text-sm font-bold`}>Nombre de usuario</Text>
-      <Text style={tw`w-[35%] text-center text-sm font-bold`}>Rol</Text>
+    <View style={tw`flex flex-row items-center w-full h-full px-3`}>
+      <Text style={tw`w-[45%] text-sm font-bold md:text-2xl`}>Nombre de usuario</Text>
+      <Text style={tw`w-[35%] text-center text-sm font-bold md:text-2xl`}>Rol</Text>
     </View>
   </View>
 )
@@ -85,18 +85,18 @@ const AdminUser = ({ navigation }) => {
 
   return (
     <SafeAreaView style={tw`flex items-center w-full h-full gap-4`}>
-      <View style={tw`flex items-center justify-end w-full h-16 bg-teal-700`}>
-        <View style={tw`flex flex-row items-center justify-between w-full`}>
-          <Entypo
-            name='chevron-left'
-            color='white'
-            size={32}
-            style={tw`self-center`}
-            onPress={() => navigation.goBack()}
-          />
-          <Text style={tw`text-xl font-semibold text-white`}>Administración de usuarios</Text>
-          <Text />
-        </View>
+      <View style={tw`flex flex-row items-center justify-between w-full h-16 bg-teal-700 md:h-24`}>
+        <Entypo
+          name='chevron-left'
+          color='white'
+          size={32}
+          style={tw`self-center md:ml-2`}
+          onPress={() => navigation.goBack()}
+        />
+        <Text style={tw`text-2xl font-semibold text-white md:text-4xl`}>
+          Administración de usuarios
+        </Text>
+        <Text />
       </View>
       <UserForm
         login={false}
@@ -104,21 +104,23 @@ const AdminUser = ({ navigation }) => {
         user={user}
         handleSave={handleSave}
       />
-      <FlatList
-        data={users}
-        renderItem={({ item }) => (
-          <ItemUser
-            item={item}
-            setUser={setUser}
-            deleteUser={handleDelete}
-          />
-        )}
-        ListHeaderComponent={FlatListHeaderList}
-        stickyHeaderIndices={[0]}
-        ItemSeparatorComponent={<View style={tw`w-full h-[1px] bg-black`} />}
-        keyExtractor={(item) => item.id}
-        style={tw`border border-black h-60`}
-      />
+      <View style={tw`w-full md:w-9/12`}>
+        <FlatList
+          data={users}
+          renderItem={({ item }) => (
+            <ItemUser
+              item={item}
+              setUser={setUser}
+              deleteUser={handleDelete}
+            />
+          )}
+          ListHeaderComponent={FlatListHeaderList}
+          stickyHeaderIndices={[0]}
+          ItemSeparatorComponent={<View style={tw`w-full h-[1px] bg-black`} />}
+          keyExtractor={(item) => item.id}
+          style={tw`border border-black`}
+        />
+      </View>
     </SafeAreaView>
   )
 }
@@ -127,7 +129,7 @@ export default AdminUser
 const styles = StyleSheet.create({
   headerList: {
     justifyContent: 'flex-end',
-    height: 30,
+    height: 40,
     width: '100%',
     backgroundColor: 'white',
     border: 2.9,

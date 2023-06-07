@@ -5,6 +5,8 @@ export const CUENTA_DNI = 'Cuenta DNI'
 export const DEBIT = 'Débito'
 export const CREDIT = 'Crédito'
 export const MERCADO_PAGO = 'Mercado Pago'
+export const TRANSFER = 'Transferencia'
+export const MODO = 'MODO'
 
 export const KEYS = [
   '7',

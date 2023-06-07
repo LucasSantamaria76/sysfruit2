@@ -1,6 +1,6 @@
 import { Image, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import tw from 'twrnc'
+import tw from '../lib/tailwind'
 import { useState } from 'react'
 import { inputStyle } from '../styles'
 import { formatDate } from '../lib/formatDate'
@@ -53,11 +53,15 @@ const ShoppingScreen = ({ navigation }) => {
   return (
     <SafeAreaView>
       <View style={tw`items-center gap-3`}>
-        <View style={tw`flex flex-row items-center justify-between w-full h-16 px-3 bg-teal-700`}>
+        <View
+          style={tw`flex flex-row items-center justify-between w-full h-16 px-3 bg-teal-700 md:h-20`}
+        >
           <Text />
-          <View style={tw`flex items-center justify-center h-16`}>
-            <Text style={tw`text-2xl font-extrabold text-red-500`}>Ingreso de salidas</Text>
-            <Text style={tw`text-white`}>{formatDate(Date.now())}</Text>
+          <View style={tw`flex items-center justify-center h-16 md:h-20`}>
+            <Text style={tw`text-2xl font-extrabold text-red-500 md:text-4xl`}>
+              Ingreso de salidas
+            </Text>
+            <Text style={tw`text-white md:text-xl`}>{formatDate(Date.now())}</Text>
           </View>
           <FontAwesome
             name='list-alt'
@@ -68,49 +72,55 @@ const ShoppingScreen = ({ navigation }) => {
             }}
           />
         </View>
-        <View style={tw`items-center w-full`}>
-          <Text style={tw`self-start pl-5 text-sm`}>Descripción</Text>
-          <TextInput
-            autoCapitalize='words'
-            inputMode='text'
-            value={description}
-            onChangeText={setDescription}
-            style={[inputStyle, tw`pt-1 text-3xl`]}
-          />
-        </View>
-        <View style={tw`items-center w-full`}>
-          <Text style={tw`self-start pl-5 text-sm`}>Importe</Text>
-          <TextInput
-            editable={false}
-            inputMode='text'
-            value={amount}
-            style={[inputStyle, tw`pt-1 text-4xl font-bold text-right`]}
-          />
+        <View style={tw`w-11/12 md:w-9/12`}>
+          <View style={tw`items-center w-full mb-4`}>
+            <Text style={tw`self-start w-full text-sm md:text-xl`}>Descripción</Text>
+            <TextInput
+              autoCapitalize='words'
+              inputMode='text'
+              value={description}
+              onChangeText={setDescription}
+              style={[inputStyle, tw`w-full pt-1 text-3xl md:h-16`]}
+            />
+          </View>
+          <View style={tw`items-center w-full`}>
+            <Text style={tw`self-start w-full text-sm md:text-xl`}>Importe</Text>
+            <TextInput
+              editable={false}
+              inputMode='text'
+              value={amount}
+              style={[inputStyle, tw`w-full pt-1 text-4xl font-bold text-right md:h-16`]}
+            />
+          </View>
         </View>
 
-        <View style={tw`flex flex-row flex-wrap w-11/12 h-auto`}>
+        <View style={tw`flex flex-row flex-wrap w-11/12 h-auto md:w-9/12`}>
           {KEYS_Shopping.map((el) => (
             <TouchableOpacity
               key={el}
-              style={tw`flex items-center justify-center w-1/4 h-16 bg-gray-300 border border-black rounded-md`}
+              style={tw`flex items-center justify-center w-1/4 h-16 bg-gray-300 border border-black rounded-md md:h-24`}
               onPress={() => (['💰', '🪙'].includes(el) ? handleSave(el) : handlePress(el))}
             >
-              <Text style={tw`w-full pt-2 text-4xl font-bold text-center text-teal-600`}>{el}</Text>
+              <Text
+                style={tw`w-full pt-2 text-4xl font-bold text-center text-teal-600 md:text-6xl`}
+              >
+                {el}
+              </Text>
             </TouchableOpacity>
           ))}
         </View>
-        <View style={tw`flex flex-row flex-wrap w-11/12 h-auto`}>
+        <View style={tw`flex flex-row flex-wrap w-11/12 h-auto md:w-9/12`}>
           {itemsBtnShopping.map((el) => (
             <TouchableOpacity
               key={el.name}
-              style={tw`flex items-center justify-center w-1/4 h-16 bg-white border border-black rounded-md`}
+              style={tw`flex items-center justify-center w-1/4 h-16 bg-white border border-black rounded-md md:h-28`}
               onPress={() => setDescription(el.name)}
             >
               <Image
                 source={el.image}
                 style={tw`w-1/2 h-3/5`}
               />
-              <Text style={tw`text-xs`}>{el.name}</Text>
+              <Text style={tw`text-xs md:text-base`}>{el.name}</Text>
             </TouchableOpacity>
           ))}
         </View>

@@ -1,5 +1,5 @@
 import { Alert, View, Text, StyleSheet, ScrollView } from 'react-native'
-import tw from 'twrnc'
+import tw from '../lib/tailwind'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Entypo } from '@expo/vector-icons'
 import Select from 'react-native-select-dropdown'
@@ -57,14 +57,14 @@ const MonthlySummary = ({ navigation }) => {
         elevation={5}
         style={styles.header}
       >
-        <View style={tw`flex flex-row items-center justify-between w-full px-3 h-1/2`}>
+        <View style={tw`flex flex-row items-center justify-between w-5 w-full px-3 h-1/2`}>
           <Entypo
             name='chevron-left'
             style={tw`text-teal-600`}
             size={32}
             onPress={() => navigation.goBack()}
           />
-          <Text style={tw`text-2xl font-bold text-teal-600`}>Resumen mensual</Text>
+          <Text style={tw`text-2xl font-bold text-teal-600 md:text-4xl`}>Resumen mensual</Text>
           <Text />
         </View>
         <View style={tw`flex flex-row items-center justify-evenly`}>
@@ -78,11 +78,11 @@ const MonthlySummary = ({ navigation }) => {
             defaultValueByIndex={Number(date.slice(0, 2)) - 1}
             buttonTextAfterSelection={(selectedItem) => selectedItem}
             rowTextForSelection={(item, index) => item}
-            buttonStyle={tw`w-40 h-8 mb-2 bg-transparent border-b border-black`}
-            buttonTextStyle={tw`text-sm font-bold`}
+            buttonStyle={tw`w-40 h-8 mb-2 bg-transparent border-b border-black md:h-10 md:w-56`}
+            buttonTextStyle={tw`font-bold md:text-3xl`}
             dropdownStyle={tw`rounded-lg`}
-            rowStyle={tw`h-7`}
-            rowTextStyle={tw`text-sm font-bold`}
+            rowStyle={tw`h-7 md:h-10`}
+            rowTextStyle={tw`text-sm font-bold md:text-2xl`}
             selectedRowStyle={tw`bg-teal-600`}
             selectedRowTextStyle={tw`font-bold text-white`}
             renderDropdownIcon={(isOpened) => {
@@ -105,11 +105,11 @@ const MonthlySummary = ({ navigation }) => {
             }
             buttonTextAfterSelection={(selectedItem) => selectedItem}
             rowTextForSelection={(item, index) => item}
-            buttonStyle={tw`w-40 h-8 mb-2 bg-transparent border-b border-black`}
-            buttonTextStyle={tw`text-sm font-bold`}
+            buttonStyle={tw`w-40 h-8 mb-2 bg-transparent border-b border-black md:h-10 md:w-56`}
+            buttonTextStyle={tw`font-bold md:text-3xl`}
             dropdownStyle={tw`rounded-lg`}
-            rowStyle={tw`h-7`}
-            rowTextStyle={tw`text-sm font-bold`}
+            rowStyle={tw`h-7 md:h-10`}
+            rowTextStyle={tw`text-sm font-bold md:text-2xl`}
             selectedRowStyle={tw`bg-teal-600`}
             selectedRowTextStyle={tw`font-bold text-white`}
             renderDropdownIcon={(isOpened) => {
@@ -131,8 +131,8 @@ const MonthlySummary = ({ navigation }) => {
         <PrintTotalsPurchases purchases={purchasesOfTheMonth} />
 
         <View style={tw`flex flex-row items-center justify-between p-2 border-b-2 border-teal-600`}>
-          <Text style={tw`text-2xl font-bold `}>Diferencia</Text>
-          <Text style={tw`text-2xl font-bold text-red-500`}>
+          <Text style={tw`text-2xl font-bold md:text-3xl`}>Diferencia</Text>
+          <Text style={tw`text-2xl font-bold text-red-500 md:text-3xl`}>
             {formatPrice(total(salesOfTheMonth) - total(purchasesOfTheMonth))}
           </Text>
         </View>

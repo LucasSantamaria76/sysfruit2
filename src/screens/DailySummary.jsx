@@ -1,10 +1,8 @@
 import { View, Text, ScrollView } from 'react-native'
 import { Entypo } from 'react-native-vector-icons'
 import useMovementsStore from '../stores/movementsStore'
-import tw from 'twrnc'
+import tw from '../lib/tailwind'
 import { formatPrice } from './../lib/formatPrice'
-import { total, totals } from '../lib/totals'
-import { formatInTimeZone } from 'date-fns-tz'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { PrintTotalsCashWithdrawals, PrintTotalsPurchases, PrintTotalsSales } from '../components'
 
@@ -21,7 +19,7 @@ const DailySummary = ({ navigation }) => {
 
   return (
     <SafeAreaView>
-      <View style={tw`flex flex-row w-full h-16 bg-teal-700`}>
+      <View style={tw`flex flex-row justify-between w-full h-16 bg-teal-700 md:h-20`}>
         <Entypo
           name='chevron-left'
           color='white'
@@ -29,14 +27,15 @@ const DailySummary = ({ navigation }) => {
           style={tw`self-center`}
           onPress={() => navigation.goBack()}
         />
-        <View style={tw`flex items-center justify-center w-10/12`}>
-          <Text style={tw`self-center text-2xl text-white`}>Resumen del día</Text>
-        </View>
+        <Text style={tw`self-center text-2xl text-white md:text-4xl md:m-2`}>Resumen del día</Text>
+        <Text />
       </View>
       <ScrollView style={tw`w-full`}>
         <View style={tw`flex flex-row items-center justify-between p-2 border-b border-black`}>
-          <Text style={tw`text-xl font-semibold `}>Cambio en caja:</Text>
-          <Text style={tw`text-xl font-semibold text-red-600`}>{formatPrice(cashChange)}</Text>
+          <Text style={tw`text-xl font-semibold md:text-4xl md:m-2`}>Cambio en caja:</Text>
+          <Text style={tw`text-xl font-semibold text-red-600 md:text-4xl md:m-2`}>
+            {formatPrice(cashChange)}
+          </Text>
         </View>
 
         <PrintTotalsSales sales={sales} />
@@ -46,8 +45,10 @@ const DailySummary = ({ navigation }) => {
         <PrintTotalsCashWithdrawals cashWithdrawals={cashWithdrawals} />
 
         <View style={tw`flex flex-row items-center justify-between p-2 border-b-2 border-teal-600`}>
-          <Text style={tw`text-2xl font-bold `}>Efectivo en caja</Text>
-          <Text style={tw`text-2xl font-bold text-red-500`}>{formatPrice(cashAvailable)}</Text>
+          <Text style={tw`text-2xl font-bold md:text-4xl md:m-2`}>Efectivo en caja</Text>
+          <Text style={tw`text-2xl font-bold text-red-500 md:text-4xl md:m-2`}>
+            {formatPrice(cashAvailable)}
+          </Text>
         </View>
       </ScrollView>
     </SafeAreaView>

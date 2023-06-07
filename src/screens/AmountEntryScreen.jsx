@@ -1,6 +1,6 @@
 import { ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import tw from 'twrnc'
+import tw from '../lib/tailwind'
 import { KEYS } from '../constant'
 import { useState } from 'react'
 import { Entypo } from 'react-native-vector-icons'
@@ -63,7 +63,7 @@ const AmountEntryScreen = ({ navigation, route: { params } }) => {
 
   return (
     <SafeAreaView style={tw`items-center flex-1`}>
-      <View style={tw`flex flex-row w-full h-24 bg-teal-700`}>
+      <View style={tw`flex flex-row w-full h-24 bg-teal-700 md:h-36`}>
         <Entypo
           name='chevron-left'
           color='white'
@@ -72,24 +72,28 @@ const AmountEntryScreen = ({ navigation, route: { params } }) => {
           onPress={() => navigation.goBack()}
         />
         <View style={tw`flex items-center justify-center w-10/12`}>
-          <Text style={tw`self-center text-2xl text-white`}>Tipo de operación:</Text>
-          <Text style={tw`self-center text-4xl font-bold text-red-500`}>{typeOfPayment}</Text>
+          <Text style={tw`self-center mb-2 text-2xl text-white md:text-4xl md:mb-4`}>
+            Tipo de operación:
+          </Text>
+          <Text style={tw`self-center text-4xl font-bold text-red-500 md:text-6xl`}>
+            {typeOfPayment}
+          </Text>
         </View>
       </View>
-      <View style={tw`p-4`}>
+      <View style={tw`w-11/12 mt-10`}>
         <View
-          style={tw`flex flex-row items-center justify-end w-full h-16 px-2 bg-white border border-gray-900 rounded-md`}
+          style={tw`w-full h-16 bg-white border border-gray-900 rounded-md md:h-28 md:w-10/12 md:mx-auto`}
         >
-          <Text style={tw`mt-2 text-5xl`}>{amount}</Text>
+          <Text style={tw`m-3 text-5xl text-right md:text-8xl md:m-4`}>{amount}</Text>
         </View>
-        <View style={tw`flex flex-row flex-wrap w-full h-auto mt-3`}>
+        <View style={tw`flex flex-row flex-wrap w-full h-auto mt-5 md:w-10/12 md:mx-auto`}>
           {KEYS.map((el) => (
             <TouchableOpacity
               key={el}
-              style={tw`flex items-center justify-center w-1/4 h-24 bg-gray-300 border border-black rounded-md`}
+              style={tw`flex items-center justify-center w-1/4 h-24 bg-gray-300 border border-black rounded-md md:h-36`}
               onPress={() => (el === '💾' ? handleSave() : handlePress(el))}
             >
-              <Text style={tw`pt-3 text-5xl font-bold text-teal-600`}>{el}</Text>
+              <Text style={tw`pt-3 text-5xl font-bold text-teal-600 md:text-7xl`}>{el}</Text>
             </TouchableOpacity>
           ))}
         </View>

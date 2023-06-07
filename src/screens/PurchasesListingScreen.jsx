@@ -3,7 +3,7 @@ import { ItemPurchase } from '../components'
 import useMovementsStore from '../stores/movementsStore'
 import useAuthStore from '../stores/authStore'
 import { Entypo } from 'react-native-vector-icons'
-import tw from 'twrnc'
+import tw from '../lib/tailwind'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 const PurchasesListingScreen = ({ navigation }) => {
@@ -22,7 +22,7 @@ const PurchasesListingScreen = ({ navigation }) => {
           size={32}
           onPress={() => navigation.goBack()}
         />
-        <Text style={tw`text-2xl font-bold text-teal-600`}>Listado de salidas</Text>
+        <Text style={tw`text-2xl font-bold text-teal-600 md:text-4xl`}>Listado de salidas</Text>
         <Text />
       </View>
     </View>

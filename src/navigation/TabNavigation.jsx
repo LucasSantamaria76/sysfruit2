@@ -1,6 +1,8 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { itemsTab } from '../items/itemsTab'
+import { View } from 'react-native'
+import tw from '../lib/tailwind'
 
 const { Navigator, Screen } = createBottomTabNavigator()
 
@@ -20,11 +22,13 @@ const TabNavigation = () => {
           component={item.component}
           options={({ route, navigation: { isFocused } }) => ({
             tabBarIcon: ({ color, size }) => (
-              <Ionicons
-                name={`${item.name}${isFocused() ? '' : '-outline'}`}
-                color={color}
-                size={size}
-              />
+              <View style={tw`flex items-center justify-center w-16 h-full`}>
+                <Ionicons
+                  name={`${item.name}${isFocused() ? '' : '-outline'}`}
+                  color={color}
+                  size={size + 15}
+                />
+              </View>
             )
           })}
         />

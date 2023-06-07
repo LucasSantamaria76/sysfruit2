@@ -3,7 +3,9 @@ import dni from '../../assets/images/DNI.android.jpg'
 import credit from '../../assets/images/credit.android.png'
 import debit from '../../assets/images/debit.android.png'
 import mp from '../../assets/images/mp.android.png'
-import { CASH, CREDIT, CUENTA_DNI, DEBIT, MERCADO_PAGO } from '../constant'
+import transfer from '../../assets/images/transfer.png'
+import modo from '../../assets/images/modo.png'
+import { CASH, CREDIT, CUENTA_DNI, DEBIT, MERCADO_PAGO, MODO, TRANSFER } from '../constant'
 
 export const itemsTypesSales = [
   {
@@ -25,6 +27,14 @@ export const itemsTypesSales = [
   {
     name: MERCADO_PAGO,
     image: mp
+  },
+  {
+    name: TRANSFER,
+    image: transfer
+  },
+  {
+    name: MODO,
+    image: modo
   }
 ]
 
@@ -40,5 +50,9 @@ export const typeOfPayment = (type) => {
       return credit
     case CASH:
       return cash
+    case MODO:
+      return modo
+    case TRANSFER:
+      return transfer
   }
 }

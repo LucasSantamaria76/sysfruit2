@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react'
 import { View, Text, TextInput, TouchableOpacity } from 'react-native'
 import { Entypo } from 'react-native-vector-icons'
-import tw from 'twrnc'
+import tw from '../lib/tailwind'
 import { inputStyle } from '../styles'
 import { useToast } from 'react-native-toast-notifications'
 import useAuthStore from '../stores/authStore'
@@ -38,22 +38,22 @@ const CashWithdrawals = ({ navigation }) => {
 
   return (
     <SafeAreaView style={tw`flex items-center gap-5`}>
-      <View style={tw`flex items-center justify-end w-full bg-teal-700 h-30`}>
+      <View style={tw`flex items-center justify-center w-full h-16 bg-teal-700 md:h-30`}>
         <View style={tw`flex flex-row items-center justify-between w-full`}>
           <Entypo
             name='chevron-left'
             color='white'
             size={40}
-            style={tw`self-center`}
+            style={tw`self-center md:pl-2`}
             onPress={() => navigation.goBack()}
           />
-          <Text style={tw`text-3xl font-bold text-white`}>Retiros de caja</Text>
+          <Text style={tw`text-3xl font-bold text-white md:text-6xl`}>Retiros de caja</Text>
           <Text />
         </View>
       </View>
-      <View style={tw`items-center w-full gap-3`}>
-        <View style={tw`items-center w-full`}>
-          <Text style={tw`self-start pl-5 text-lg`}>Descripción</Text>
+      <View style={tw`items-center w-full gap-3 md:w-9/12`}>
+        <View style={tw`items-center w-11/12`}>
+          <Text style={tw`self-start w-full text-lg md:text-2xl`}>Descripción</Text>
           <TextInput
             autoFocus={true}
             enterKeyHint='next'
@@ -63,11 +63,11 @@ const CashWithdrawals = ({ navigation }) => {
             value={description}
             onChangeText={setDescription}
             onSubmitEditing={() => inputRef.current?.focus()}
-            style={[inputStyle, tw`pt-1 text-3xl`]}
+            style={[inputStyle, tw`w-full pt-1 text-3xl md:h-16`]}
           />
         </View>
-        <View style={tw`items-center w-full`}>
-          <Text style={tw`self-start pl-5 text-lg`}>Importe</Text>
+        <View style={tw`items-center w-11/12`}>
+          <Text style={tw`self-start w-full text-lg md:text-2xl`}>Importe</Text>
           <TextInput
             ref={inputRef}
             autoFocus={true}
@@ -77,14 +77,14 @@ const CashWithdrawals = ({ navigation }) => {
             value={amount}
             onChangeText={setAmount}
             onSubmitEditing={save}
-            style={[inputStyle, tw`pt-1 text-4xl font-bold text-right`]}
+            style={[inputStyle, tw`w-full pt-1 text-4xl font-bold text-right md:h-16`]}
           />
         </View>
         <TouchableOpacity
-          style={tw`flex items-center justify-center w-11/12 bg-teal-600 rounded-lg h-14`}
+          style={tw`flex items-center justify-center w-11/12 bg-teal-600 rounded-lg h-14 md:h-20`}
           onPress={save}
         >
-          <Text style={tw`text-2xl text-white`}>Guardar</Text>
+          <Text style={tw`text-2xl text-white md:text-5xl`}>Guardar</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
